@@ -105,8 +105,8 @@ function pushbutton2_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 Net = getappdata(handles.figure1,'Net');
 
-GateData(ImagePath,SegPath,SigPatn);
-FeatureExt(n)
+
+FeatureExt(1)
 A = sim(Net,p);
 
 
