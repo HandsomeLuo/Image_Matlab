@@ -185,9 +185,9 @@ function pushbutton1_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 ImagePath = getappdata(handles.figure1,'ImagePath');
 SegPath = getappdata(handles.figure1,'SegPath');
-SigPatn = getappdata(handles.figure1,'SigPatn');
+SigPath = getappdata(handles.figure1,'SigPath');
 try
-    GateData(ImagePath,SegPath,SigPatn);
+    GateData(ImagePath,SegPath,SigPath);
     FeatureExt(0);
 catch
     msgbox('提取失败');
@@ -296,12 +296,12 @@ function pushbutton5_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton5 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-SigPatn = uigetdir('e:\', '选择标记图像路径' );
-if isequal(SigPatn,0)
+SigPath = uigetdir('e:\', '选择标记图像路径' );
+if isequal(SigPath,0)
     return
 end
-set(handles.text3,'String',SigPatn);
-setappdata(handles.figure1,'SigPatn',SigPatn);
+set(handles.text3,'String',SigPath);
+setappdata(handles.figure1,'SigPath',SigPath);
 
 
 % --------------------------------------------------------------------

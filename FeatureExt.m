@@ -1,4 +1,4 @@
-function FeatureExt(n)
+function FeatureExt(n,Ori_test)
 if n == 0
 %%%%%%%%%%%%%%%%%%训练样本特征提取%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Images = dir(fullfile('Data\1\','*.jpeg'));
@@ -53,66 +53,10 @@ save('trainsetMat\Train_colorhist.mat','color1','color2','color3','color4');
 save('trainsetMat\Train_texture.mat','texture1','texture2','texture3','texture4');
 %%%%%%%%%%%%%%%%%%%%%%%%训练样本特征提取%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%%测试样本特征提取%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Images = dir(fullfile('E:\Matlab projects\FeatureExtraction\grass_testset\','*.jpeg'));
-% 
-% LengthFiles =length(Images);
-%   
-%  for i = 1:LengthFiles;
-%      
-%     Ori = imread(strcat('E:\Matlab projects\FeatureExtraction\grass_testset\',Images(i).name));
-%     I = Ori;
-%     %grass_color(i,:) = colorhist(I);
-%     grass_texture(i,:) = statxture(I);
-%  end
-% 
-%  Images = dir(fullfile('E:\Matlab projects\FeatureExtraction\water_testset\','*.jpeg'));
-% 
-% LengthFiles =length(Images);
-%   
-%  for i = 1:LengthFiles;
-%      
-%     Ori = imread(strcat('E:\Matlab projects\FeatureExtraction\water_testset\',Images(i).name));
-%     I = Ori;
-%     %water_color(i,:) = colorhist(I);
-%     water_texture(i,:) = statxture(I);
-%  end
-%  
-%  Images = dir(fullfile('E:\Matlab projects\FeatureExtraction\land_testset\','*.jpeg'));
-% 
-% LengthFiles =length(Images);
-%   
-%  for i = 1:LengthFiles;
-%      
-%     Ori = imread(strcat('E:\Matlab projects\FeatureExtraction\land_testset\',Images(i).name));
-%     I = Ori;
-%     %land_color(i,:) = colorhist(I);
-%     land_texture(i,:) = statxture(I);
-%  end
-%  
-%  Images = dir(fullfile('E:\Matlab projects\FeatureExtraction\bear_testset\','*.jpeg'));
-% 
-% LengthFiles =length(Images);
-%   
-%  for i = 1:LengthFiles;
-%      
-%     Ori = imread(strcat('E:\Matlab projects\FeatureExtraction\bear_testset\',Images(i).name));
-%     I = Ori;
-%     %bear_color(i,:) = colorhist(I);
-%     bear_texture(i,:) = statxture(I);
-%  end
-%  
-% %save('testsetMat\Test_colorhist.mat','water_color','bear_color','grass_color','land_color');
-% save('testsetMat\Test_texture.mat','water_texture','bear_texture','grass_texture','land_texture');
-%%%%%%%%%%%%%%%%%%%%%%%%测试样本特征提取%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%     train1 = cat(2,Pcolor1,texture1);
-%     train2 = cat(2,Pcolor2,texture2);
-%     train3 = cat(2,Pcolor3,texture3);
-%     train4 = cat(2,Pcolor4,texture4);
-%     trainset = cat(1,train1,train2,train3,train4);
 %------------------PCA降维处理---------------------------%    
     color = cat(1,color1,color2,color3,color4);
+    texture = cat(1,texture1,texture2,texture3,texture4);
     
     [COEFF,SCORE,latent] = pca(color);        %对颜色特征降维
     x = cumsum(latent)./sum(latent);
@@ -120,7 +64,6 @@ save('trainsetMat\Train_texture.mat','texture1','texture2','texture3','texture4'
     n = y(1);
     Pcolor = SCORE(:,1:n);
     
-    texture = cat(1,texture1,texture2,texture3,texture4);
     trainset = cat(2,Pcolor,texture);
     %trainset = cat(1,TrainsetC.water_color,TrainsetC.bear_color,TrainsetC.grass_color,TrainsetC.land_color);
 
@@ -148,7 +91,24 @@ save('trainsetMat\Train_texture.mat','texture1','texture2','texture3','texture4'
 end
 
 
-%%%%%%%%%%%%%%%%%%测试样本特征提取%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%测试样本特征提取%%%%%%%%%%%%%%%%%%%%%%%%%%
 if n ==1
     
+    color_test= colorhist(Ori_test);
+    texture_test= statxture(Ori_test);
+    
+     [COEFF,SCORE,latent] = pca(color);        %对颜色特征降维
+    x = cumsum(latent)./sum(latent);
+    y = find(x>0.9);
+    n = y(1);
+    Pcolor = SCORE(:,1:n);
+    
+    trainset = cat(2,Pcolor,texture_test);
+    P = trainset';
+    save('testMat\P.mat','P');
+%save('testsetMat\Test_colorhist.mat','water_color','bear_color','grass_color','land_color');
+%save('testsetMat\Test_texture.mat','water_texture','bear_texture','grass_texture','land_texture');
+%%%%%%%%%%%%%%%%%%%%%%%测试样本特征提取%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 end    
